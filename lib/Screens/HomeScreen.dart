@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:stockcontrolflutter/Models/Product.dart';
 import 'package:stockcontrolflutter/Widgets/HomeScreenHeader.dart';
+import 'package:stockcontrolflutter/Widgets/ProductDetail.dart';
 import 'package:stockcontrolflutter/Widgets/ProductsList.dart';
 import 'package:stockcontrolflutter/Widgets/productListElement.dart';
 
@@ -36,9 +37,21 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void showDetail() {
-
+  void showDetail(int id) {
+    _detailId = id;
+    setState(() {
+      _showDetail = true;
+    });
   }
+
+  void showList() {
+    setState(() {
+      _showDetail = false;
+    });
+  }
+
+  int _detailId;
+  bool _showDetail = false;
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
           HomeScreenHeader(),
           Expanded(
             child: Container(
+              width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -83,7 +97,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: Column(
                 children: <Widget>[
-                  Container(
+                  if(_showDetail)ProductDetail(Products.firstWhere((prod) {
+                    return prod.id == _detailId;
+                  }), showList),
+                  if(!_showDetail)Container(
                     alignment: Alignment.centerLeft,
                     child: Padding(
                       padding:
@@ -98,8 +115,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  Expanded(
-                    child: ProductList(Products, _addStock),
+                  if(!_showDetail)Expanded(
+                    child: ProductList(Products, _addStock, showDetail),
                   )
                 ],
               ),

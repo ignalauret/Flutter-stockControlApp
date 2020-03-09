@@ -5,8 +5,9 @@ class ProductListElement extends StatelessWidget {
   final String text;
   final int stock;
   final Function _addStock;
+  final Function _showDetail;
 
-  ProductListElement(this.id, this.text, this.stock, this._addStock);
+  ProductListElement(this.id, this.text, this.stock, this._addStock, this._showDetail);
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -29,20 +30,20 @@ class ProductListElement extends StatelessWidget {
                 icon: Icon(Icons.add),
                 iconSize: 20,
                 onPressed: () {
-                  _addStock(id, 1);
+                  _addStock(this.id, 1);
                 },
               ),
               IconButton(
                 icon: Icon(Icons.remove),
                 iconSize: 20,
                 onPressed: () {
-                  _addStock(id, -1);
+                  _addStock(this.id, -1);
                 },
               ),
             ],
           ),
         ),
-        onLongPress: () {},
+        onLongPress: () {_showDetail(this.id);},
       ),
     );
   }
